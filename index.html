@@ -129,6 +129,7 @@
                     <a href="#health-diary" class="nav-link font-medium hover:text-primary transition-colors" data-section="health-diary">健康日记</a>
                     <a href="#health-articles" class="nav-link font-medium hover:text-primary transition-colors" data-section="health-articles">健康文章</a>
                     <a href="#health-stars" class="nav-link font-medium hover:text-primary transition-colors" data-section="health-stars">健康达人</a>
+                    <a href="#mental-health" class="nav-link font-medium hover:text-primary transition-colors" data-section="mental-health">心理健康</a>
                 </nav>
                 
                 <!-- 移动端菜单按钮 -->
@@ -148,9 +149,50 @@
                 <a href="#health-diary" class="py-2 nav-link hover:text-primary transition-colors" data-section="health-diary">健康日记</a>
                 <a href="#health-articles" class="py-2 nav-link hover:text-primary transition-colors" data-section="health-articles">健康文章</a>
                 <a href="#health-stars" class="py-2 nav-link hover:text-primary transition-colors" data-section="health-stars">健康达人</a>
+                <a href="#mental-health" class="py-2 nav-link hover:text-primary transition-colors" data-section="mental-health">心理健康</a>
             </div>
         </div>
     </header>
+
+<!-- 欢迎动画区域 -->
+<div class="bg-gradient-to-r from-primary/10 to-secondary/10 py-10 mb-8 overflow-hidden relative">
+    <div class="container mx-auto px-4">
+        <div class="welcome-animation flex flex-col items-center justify-center">
+            <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-primary mb-4 opacity-0 transform translate-y-8" style="animation: fadeUp 0.8s 0.2s forwards">
+                Welcome！欢迎你来到这里~
+            </h2>
+            <p class="text-[clamp(1rem,2vw,1.25rem)] text-dark/80 max-w-2xl text-center opacity-0 transform translate-y-8" style="animation: fadeUp 0.8s 0.5s forwards">
+                这里有专为青少年打造的健康指南，陪你一起养成良好习惯，拥抱健康生活
+            </p>
+            <div class="flex gap-4 mt-6 opacity-0 transform translate-y-8" style="animation: fadeUp 0.8s 0.8s forwards">
+                <span class="inline-block bg-white px-4 py-2 rounded-full shadow-md flex items-center">
+                    <i class="fa fa-apple text-green-500 mr-2"></i>健康饮食
+                </span>
+                <span class="inline-block bg-white px-4 py-2 rounded-full shadow-md flex items-center">
+                    <i class="fa fa-heartbeat text-primary mr-2"></i>科学运动
+                </span>
+                <span class="inline-block bg-white px-4 py-2 rounded-full shadow-md flex items-center">
+                    <i class="fa fa-smile-o text-accent mr-2"></i>心理健康
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 装饰元素 -->
+    <div class="absolute top-1/4 left-10 w-12 h-12 bg-primary/20 rounded-full animate-pulse"></div>
+    <div class="absolute bottom-1/3 right-20 w-16 h-16 bg-secondary/20 rounded-full animate-pulse" style="animation-delay: 0.5s"></div>
+    <div class="absolute top-1/2 left-1/4 w-8 h-8 bg-accent/20 rounded-full animate-pulse" style="animation-delay: 1s"></div>
+</div>
+
+<style>
+/* 欢迎动画关键帧 */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 
     <main class="container mx-auto px-4 py-8">
         <!-- 首页内容 -->
@@ -343,9 +385,17 @@
                         </div>
                         <h3 class="text-center font-bold">健康日记</h3>
                     </a>
-                </div>
+  
+                  <!-- 功能入口5：心理健康 -->          
+                  <a href="#mental-health" class="flex flex-col items-center p-5 bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 sticker-shadow" data-section="mental-health">
+                      <div class="w-16 h-16 rounded-full bg-purple-200 flex items-center justify-center mb-4">
+                          <i class="fa fa-smile-o text-2xl text-purple-500"></i>
+                      </div>
+                      <h3 class="text-center font-bold">心理健康</h3>
+                  </a>
+               </div>
             </div>
-            
+
             <!-- 健康达人展示 -->
             <div>
                 <h2 class="text-3xl font-bold text-center mb-10 text-primary">健康达人分享</h2>
@@ -871,7 +921,156 @@
             <div class="absolute right-8 top-40 w-14 h-14 bg-accent/20 rounded-full sticker-shadow sticker-1 hidden md:block"></div>
             <div class="absolute left-10 bottom-60 w-18 h-18 bg-primary/20 rounded-full sticker-shadow sticker-3 hidden md:block"></div>
         </section>
-    </main>
+
+            <section id="mental-health" class="section-content">
+                 <div class="text-center mb-10">
+                      <h2 class="text-3xl font-bold text-primary mb-4">心理健康空间</h2>
+                      <p class="text-gray-600 max-w-2xl mx-auto">通过轻松有趣的方式缓解压力，了解自己的心理状态，保持积极乐观的心态。</p>
+                </div>
+
+          <!-- 解压小游戏区域 -->
+          <div class="mb-16">
+              <h3 class="text-2xl font-bold text-center mb-8 text-secondary">解压小游戏</h3>
+        
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- 游戏1：气泡点击 -->
+                    <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+                        <h4 class="text-xl font-bold mb-4 text-center">气泡消除</h4>
+                        <p class="text-gray-600 mb-6 text-center">点击屏幕上的气泡进行消除，放松你的心情</p>
+                
+                        <div id="bubble-game" class="w-full h-64 bg-blue-50 rounded-2xl mb-4 relative overflow-hidden">
+                             <!-- 气泡将通过JS动态生成 -->
+                             <div class="absolute inset-0 flex items-center justify-center text-gray-400" id="bubble-instructions">
+                                   点击开始游戏
+                             </div>
+                       </div>
+                
+                       <div class="flex justify-between items-center">
+                            <div>
+                                   <span class="text-gray-500">分数: </span>
+                                   <span id="bubble-score" class="font-bold">0</span>
+                            </div>
+                            <button id="start-bubble" class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-full transition-colors">
+                        开始
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 游戏2：呼吸练习 -->
+            <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+                <h4 class="text-xl font-bold mb-4 text-center">深呼吸练习</h4>
+                <p class="text-gray-600 mb-6 text-center">跟随动画进行深呼吸，缓解压力和焦虑</p>
+                
+                <div class="w-full h-64 flex items-center justify-center mb-4">
+                    <div id="breath-circle" class="w-32 h-32 rounded-full bg-purple-200 flex items-center justify-center text-purple-600 font-medium">
+                        准备开始
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button id="start-breath" class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-full transition-colors">
+                        开始练习
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 心理测试区域 -->
+    <div>
+        <h3 class="text-2xl font-bold text-center mb-8 text-secondary">趣味心理测试</h3>
+        
+        <div class="max-w-3xl mx-auto bg-white rounded-3xl p-6 md:p-8 shadow-lg sticker-shadow">
+            <h4 class="text-xl font-bold mb-6 text-center">你的压力来源是什么？</h4>
+            
+            <form id="mental-test" class="space-y-6">
+                <!-- 问题1 -->
+                <div>
+                    <p class="font-medium mb-3">1. 当你感到压力大时，更倾向于做什么？</p>
+                    <div class="space-y-2">
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q1" value="a" class="mt-1 mr-3" required> 独自待着，不想被打扰
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q1" value="b" class="mt-1 mr-3"> 和朋友或家人倾诉
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q1" value="c" class="mt-1 mr-3"> 进行体育运动或户外活动
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q1" value="d" class="mt-1 mr-3"> 吃零食或购物来缓解
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- 问题2 -->
+                <div>
+                    <p class="font-medium mb-3">2. 你认为一天中什么时候压力最大？</p>
+                    <div class="space-y-2">
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q2" value="a" class="mt-1 mr-3" required> 早晨，想到一天的任务
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q2" value="b" class="mt-1 mr-3"> 下午，学习/工作到一半时
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q2" value="c" class="mt-1 mr-3"> 晚上，回顾一天未完成的事
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q2" value="d" class="mt-1 mr-3"> 不一定，看当天情况
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- 问题3 -->
+                <div>
+                    <p class="font-medium mb-3">3. 以下哪项最容易让你感到压力？</p>
+                    <div class="space-y-2">
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q3" value="a" class="mt-1 mr-3" required> 学业/工作上的截止日期
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q3" value="b" class="mt-1 mr-3"> 人际关系问题
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q3" value="c" class="mt-1 mr-3"> 未来的不确定性
+                        </label>
+                        <label class="flex items-start p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
+                            <input type="radio" name="q3" value="d" class="mt-1 mr-3"> 身体不适或疲劳
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" id="submit-test" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors">
+                        查看结果
+                    </button>
+                </div>
+            </form>
+            
+            <!-- 测试结果 -->
+            <div id="test-result" class="mt-8 hidden">
+                <div class="border-t pt-6">
+                    <h5 class="text-xl font-bold mb-4 text-center">你的测试结果</h5>
+                    <div id="result-content" class="text-gray-700 leading-relaxed">
+                        <!-- 结果将通过JS动态填充 -->
+                    </div>
+                    <div class="mt-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                        <h6 class="font-bold text-green-700 mb-2">建议</h6>
+                        <p id="result-suggestion" class="text-green-600">
+                            <!-- 建议将通过JS动态填充 -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 装饰元素 -->
+    <div class="absolute right-6 top-40 w-20 h-20 bg-purple-200 rounded-full sticker-shadow sticker-1 hidden md:block"></div>
+    <div class="absolute left-6 top-80 w-16 h-16 bg-primary/20 rounded-full sticker-shadow sticker-3 hidden md:block"></div>
+</section>
+</main>
 
     <footer class="bg-dark text-white py-10 mt-16">
         <div class="container mx-auto px-4">
