@@ -1770,6 +1770,812 @@
         </button>
     </div>
 </section>
+<!-- 健康日记 -->
+<section id="health-diary" class="section-content">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-primary mb-4">健康日记</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">记录你的每日健康数据，追踪健康变化，养成良好生活习惯</p>
+    </div>
+
+    <!-- 数据统计概览 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+            <h3 class="text-lg font-medium text-gray-500 mb-2">总记录天数</h3>
+            <p class="text-4xl font-bold text-primary" id="total-days">0</p>
+            <p class="text-sm text-gray-500 mt-2">已坚持 <span id="streak-days">0</span> 天</p>
+        </div>
+        
+        <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+            <h3 class="text-lg font-medium text-gray-500 mb-2">平均睡眠时长</h3>
+            <p class="text-4xl font-bold text-secondary" id="avg-sleep">0<span class="text-xl">小时</span></p>
+            <p class="text-sm text-gray-500 mt-2">目标: 8小时/天</p>
+        </div>
+        
+        <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+            <h3 class="text-lg font-medium text-gray-500 mb-2">健康目标达成率</h3>
+            <p class="text-4xl font-bold text-accent" id="goal-rate">0<span class="text-xl">%</span></p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                <div class="bg-accent h-2.5 rounded-full" id="goal-progress" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 筛选和新建按钮 -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <div class="flex gap-3">
+            <button class="filter-btn health-filter-btn active px-4 py-2 rounded-full border" data-filter="all">全部</button>
+            <button class="filter-btn health-filter-btn px-4 py-2 rounded-full border" data-filter="week">本周</button>
+            <button class="filter-btn health-filter-btn px-4 py-2 rounded-full border" data-filter="month">本月</button>
+        </div>
+        <button id="new-entry-btn" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-full transition-colors">
+            <i class="fa fa-plus mr-2"></i>新建记录
+        </button>
+    </div>
+
+    <!-- 图表展示区域 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+            <h3 class="text-xl font-bold mb-4">睡眠与运动趋势</h3>
+            <div class="h-64">
+                <canvas id="sleep-exercise-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+            <h3 class="text-xl font-bold mb-4">心情变化趋势</h3>
+            <div class="h-64">
+                <canvas id="mood-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 健康指标趋势 -->
+    <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow mb-10">
+        <h3 class="text-xl font-bold mb-4">健康指标趋势分析</h3>
+        <div class="h-64">
+            <canvas id="health-metrics-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- 记录列表 -->
+    <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+        <h3 class="text-xl font-bold mb-6">记录列表</h3>
+        <div id="entries-list" class="space-y-4">
+            <!-- 记录将通过JavaScript动态生成 -->
+            <div class="text-center text-gray-500 py-10" id="empty-state">
+                <i class="fa fa-book-open text-4xl mb-4 opacity-30"></i>
+                <p>还没有记录哦，点击"新建记录"开始记录你的健康数据吧</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 健康日记表单模态框 -->
+<div id="diary-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-primary" id="modal-title">新建健康记录</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-xl">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <form id="diary-form" class="p-6 space-y-6">
+            <input type="hidden" id="entry-id">
+            
+            <!-- 基本信息 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="entry-date" class="block text-gray-700 font-medium mb-2">日期 <span class="text-red-500">*</span></label>
+                    <input type="date" id="entry-date" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                </div>
+                
+                <div>
+                    <label for="mood" class="block text-gray-700 font-medium mb-2">心情状态 <span class="text-red-500">*</span></label>
+                    <select id="mood" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                        <option value="">请选择</option>
+                        <option value="excellent">非常好</option>
+                        <option value="good">良好</option>
+                        <option value="normal">一般</option>
+                        <option value="bad">较差</option>
+                        <option value="terrible">糟糕</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 生活习惯 -->
+            <div>
+                <h4 class="text-lg font-bold mb-4">生活习惯</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="sleep" class="block text-gray-700 font-medium mb-2">睡眠时长 (小时) <span class="text-red-500">*</span></label>
+                        <input type="number" id="sleep" min="0" max="24" step="0.5" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                    </div>
+                    
+                    <div>
+                        <label for="exercise" class="block text-gray-700 font-medium mb-2">运动时长 (分钟)</label>
+                        <input type="number" id="exercise" min="0" max="300" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                    
+                    <div>
+                        <label for="water" class="block text-gray-700 font-medium mb-2">水分摄入 (ml)</label>
+                        <input type="number" id="water" min="0" max="3000" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                    
+                    <div>
+                        <label for="steps" class="block text-gray-700 font-medium mb-2">步数</label>
+                        <input type="number" id="steps" min="0" max="30000" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label for="diet" class="block text-gray-700 font-medium mb-2">饮食情况</label>
+                        <textarea id="diet" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="记录今天吃了什么，是否健康..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 身体数据 -->
+            <div>
+                <h4 class="text-lg font-bold mb-4">身体数据</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="weight" class="block text-gray-700 font-medium mb-2">体重 (kg)</label>
+                        <input type="number" id="weight" min="30" max="200" step="0.1" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                    
+                    <div>
+                        <label for="blood-pressure" class="block text-gray-700 font-medium mb-2">血压</label>
+                        <input type="text" id="blood-pressure" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="例如: 120/80">
+                    </div>
+                    
+                    <div>
+                        <label for="heart-rate" class="block text-gray-700 font-medium mb-2">心率 (次/分)</label>
+                        <input type="number" id="heart-rate" min="40" max="180" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 健康自评 -->
+            <div>
+                <h4 class="text-lg font-bold mb-4">健康自评</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">饮食健康度</label>
+                        <div class="flex justify-between">
+                            <input type="range" id="diet-score" min="1" max="10" value="5" class="w-full accent-primary">
+                            <span id="diet-score-display" class="ml-2 min-w-[2rem] text-center">5</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">精神状态</label>
+                        <div class="flex justify-between">
+                            <input type="range" id="energy-score" min="1" max="10" value="5" class="w-full accent-primary">
+                            <span id="energy-score-display" class="ml-2 min-w-[2rem] text-center">5</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">压力水平</label>
+                        <div class="flex justify-between">
+                            <input type="range" id="stress-score" min="1" max="10" value="5" class="w-full accent-primary">
+                            <span id="stress-score-display" class="ml-2 min-w-[2rem] text-center">5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 备注 -->
+            <div>
+                <label for="notes" class="block text-gray-700 font-medium mb-2">备注</label>
+                <textarea id="notes" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="记录其他健康相关的内容..."></textarea>
+            </div>
+            
+            <!-- 提交按钮 -->
+            <div class="flex justify-end gap-4 pt-4 border-t">
+                <button type="button" id="cancel-btn" class="px-6 py-3 border border-gray-300 rounded-full hover:bg-gray-100 transition-colors">取消</button>
+                <button type="submit" class="px-6 py-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">保存记录</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// 健康日记功能实现
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM元素
+    const diaryModal = document.getElementById('diary-modal');
+    const newEntryBtn = document.getElementById('new-entry-btn');
+    const closeModalBtn = document.getElementById('close-modal');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const diaryForm = document.getElementById('diary-form');
+    const entriesList = document.getElementById('entries-list');
+    const emptyState = document.getElementById('empty-state');
+    const modalTitle = document.getElementById('modal-title');
+    const entryIdInput = document.getElementById('entry-id');
+    
+    // 评分显示元素
+    const dietScore = document.getElementById('diet-score');
+    const dietScoreDisplay = document.getElementById('diet-score-display');
+    const energyScore = document.getElementById('energy-score');
+    const energyScoreDisplay = document.getElementById('energy-score-display');
+    const stressScore = document.getElementById('stress-score');
+    const stressScoreDisplay = document.getElementById('stress-score-display');
+    
+    // 统计数据元素
+    const totalDaysEl = document.getElementById('total-days');
+    const streakDaysEl = document.getElementById('streak-days');
+    const avgSleepEl = document.getElementById('avg-sleep');
+    const goalRateEl = document.getElementById('goal-rate');
+    const goalProgressEl = document.getElementById('goal-progress');
+    
+    // 筛选按钮
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    let currentFilter = 'all';
+    
+    // 图表对象
+    let sleepExerciseChart, moodChart, healthMetricsChart;
+    
+    // 初始化日期为今天
+    document.getElementById('entry-date').valueAsDate = new Date();
+    
+    // 初始化评分显示
+    dietScoreDisplay.textContent = dietScore.value;
+    energyScoreDisplay.textContent = energyScore.value;
+    stressScoreDisplay.textContent = stressScore.value;
+    
+    // 评分变化事件
+    dietScore.addEventListener('input', () => {
+        dietScoreDisplay.textContent = dietScore.value;
+    });
+    
+    energyScore.addEventListener('input', () => {
+        energyScoreDisplay.textContent = energyScore.value;
+    });
+    
+    stressScore.addEventListener('input', () => {
+        stressScoreDisplay.textContent = stressScore.value;
+    });
+    
+    // 模态框控制
+    newEntryBtn.addEventListener('click', () => {
+        openModal();
+    });
+    
+    closeModalBtn.addEventListener('click', () => {
+        closeModal();
+    });
+    
+    cancelBtn.addEventListener('click', () => {
+        closeModal();
+    });
+    
+    // 点击模态框外部关闭
+    diaryModal.addEventListener('click', (e) => {
+        if (e.target === diaryModal) {
+            closeModal();
+        }
+    });
+    
+    // 筛选功能
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // 更新活跃状态
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // 应用筛选
+            currentFilter = btn.dataset.filter;
+            renderEntries();
+        });
+    });
+    
+    // 表单提交
+    diaryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveEntry();
+    });
+    
+    // 打开模态框
+    function openModal(entry = null) {
+        // 重置表单
+        if (entry) {
+            // 编辑现有记录
+            modalTitle.textContent = '编辑健康记录';
+            entryIdInput.value = entry.id;
+            document.getElementById('entry-date').value = entry.date;
+            document.getElementById('mood').value = entry.mood;
+            document.getElementById('sleep').value = entry.sleep;
+            document.getElementById('exercise').value = entry.exercise || '';
+            document.getElementById('water').value = entry.water || '';
+            document.getElementById('steps').value = entry.steps || '';
+            document.getElementById('diet').value = entry.diet || '';
+            document.getElementById('weight').value = entry.weight || '';
+            document.getElementById('blood-pressure').value = entry.bloodPressure || '';
+            document.getElementById('heart-rate').value = entry.heartRate || '';
+            document.getElementById('diet-score').value = entry.dietScore;
+            dietScoreDisplay.textContent = entry.dietScore;
+            document.getElementById('energy-score').value = entry.energyScore;
+            energyScoreDisplay.textContent = entry.energyScore;
+            document.getElementById('stress-score').value = entry.stressScore;
+            stressScoreDisplay.textContent = entry.stressScore;
+            document.getElementById('notes').value = entry.notes || '';
+        } else {
+            // 新建记录
+            modalTitle.textContent = '新建健康记录';
+            diaryForm.reset();
+            entryIdInput.value = '';
+            document.getElementById('entry-date').valueAsDate = new Date();
+            dietScoreDisplay.textContent = '5';
+            energyScoreDisplay.textContent = '5';
+            stressScoreDisplay.textContent = '5';
+        }
+        
+        // 显示模态框
+        diaryModal.classList.remove('hidden');
+        diaryModal.classList.add('flex');
+        setTimeout(() => {
+            diaryModal.querySelector('div').classList.add('fade-in');
+        }, 10);
+    }
+    
+    // 关闭模态框
+    function closeModal() {
+        diaryModal.classList.remove('flex');
+        diaryModal.classList.add('hidden');
+    }
+    
+    // 保存记录
+    function saveEntry() {
+        const entry = {
+            id: entryIdInput.value || Date.now().toString(),
+            date: document.getElementById('entry-date').value,
+            mood: document.getElementById('mood').value,
+            sleep: parseFloat(document.getElementById('sleep').value),
+            exercise: document.getElementById('exercise').value ? parseInt(document.getElementById('exercise').value) : null,
+            water: document.getElementById('water').value ? parseInt(document.getElementById('water').value) : null,
+            steps: document.getElementById('steps').value ? parseInt(document.getElementById('steps').value) : null,
+            diet: document.getElementById('diet').value || null,
+            weight: document.getElementById('weight').value ? parseFloat(document.getElementById('weight').value) : null,
+            bloodPressure: document.getElementById('blood-pressure').value || null,
+            heartRate: document.getElementById('heart-rate').value ? parseInt(document.getElementById('heart-rate').value) : null,
+            dietScore: parseInt(document.getElementById('diet-score').value),
+            energyScore: parseInt(document.getElementById('energy-score').value),
+            stressScore: parseInt(document.getElementById('stress-score').value),
+            notes: document.getElementById('notes').value || null
+        };
+        
+        // 获取现有记录
+        let entries = JSON.parse(localStorage.getItem('healthEntries') || '[]');
+        
+        // 检查是否为编辑
+        const index = entries.findIndex(e => e.id === entry.id);
+        if (index !== -1) {
+            entries[index] = entry;
+        } else {
+            entries.push(entry);
+        }
+        
+        // 按日期排序
+        entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // 保存到本地存储
+        localStorage.setItem('healthEntries', JSON.stringify(entries));
+        
+        // 更新UI
+        renderEntries();
+        updateStatistics();
+        updateCharts();
+        closeModal();
+        
+        // 显示提示
+        showNotification(entryIdInput.value ? '记录已更新' : '记录已保存');
+    }
+    
+    // 删除记录
+    function deleteEntry(id) {
+        if (confirm('确定要删除这条记录吗？')) {
+            let entries = JSON.parse(localStorage.getItem('healthEntries') || '[]');
+            entries = entries.filter(entry => entry.id !== id);
+            localStorage.setItem('healthEntries', JSON.stringify(entries));
+            
+            renderEntries();
+            updateStatistics();
+            updateCharts();
+            showNotification('记录已删除');
+        }
+    }
+    
+    // 渲染记录列表
+    function renderEntries() {
+        let entries = JSON.parse(localStorage.getItem('healthEntries') || '[]');
+        
+        // 应用筛选
+        const today = new Date();
+        const weekAgo = new Date();
+        weekAgo.setDate(today.getDate() - 7);
+        const monthAgo = new Date();
+        monthAgo.setMonth(today.getMonth() - 1);
+        
+        if (currentFilter === 'week') {
+            entries = entries.filter(entry => new Date(entry.date) >= weekAgo);
+        } else if (currentFilter === 'month') {
+            entries = entries.filter(entry => new Date(entry.date) >= monthAgo);
+        }
+        
+        // 清空列表
+        entriesList.innerHTML = '';
+        
+        // 显示空状态或记录
+        if (entries.length === 0) {
+            emptyState.style.display = 'block';
+            return;
+        }
+        
+        emptyState.style.display = 'none';
+        
+        // 添加记录
+        entries.forEach(entry => {
+            const entryEl = document.createElement('div');
+            entryEl.className = 'p-4 border rounded-2xl hover:shadow-md transition-shadow';
+            entryEl.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <h4 class="font-bold text-lg">${formatDate(entry.date)}</h4>
+                    <div class="flex gap-2">
+                        <button class="edit-btn text-secondary hover:text-secondary/80" data-id="${entry.id}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-red-500 hover:text-red-600" data-id="${entry.id}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                    <div>
+                        <p class="text-sm text-gray-500">心情</p>
+                        <p class="font-medium">${getMoodText(entry.mood)}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">睡眠</p>
+                        <p class="font-medium">${entry.sleep} 小时</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">运动</p>
+                        <p class="font-medium">${entry.exercise || 0} 分钟</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">水分</p>
+                        <p class="font-medium">${entry.water || 0} ml</p>
+                    </div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600">
+                    <div>饮食健康度: ${getScoreStars(entry.dietScore)}</div>
+                    <div>精神状态: ${getScoreStars(entry.energyScore)}</div>
+                    <div>压力水平: ${getScoreStars(entry.stressScore)}</div>
+                </div>
+            `;
+            
+            entriesList.appendChild(entryEl);
+            
+            // 添加编辑和删除事件
+            entryEl.querySelector('.edit-btn').addEventListener('click', () => {
+                const entries = JSON.parse(localStorage.getItem('healthEntries') || '[]');
+                const entryToEdit = entries.find(e => e.id === entry.id);
+                openModal(entryToEdit);
+            });
+            
+            entryEl.querySelector('.delete-btn').addEventListener('click', () => {
+                deleteEntry(entry.id);
+            });
+        });
+    }
+    
+    // 更新统计数据
+    function updateStatistics() {
+        const entries = JSON.parse(localStorage.getItem('healthEntries') || '[]');
+        if (entries.length === 0) {
+            totalDaysEl.textContent = '0';
+            streakDaysEl.textContent = '0';
+            avgSleepEl.textContent = '0';
+            goalRateEl.textContent = '0%';
+            goalProgressEl.style.width = '0%';
+            return;
+        }
+        
+        // 总记录天数
+        totalDaysEl.textContent = entries.length;
+        
+        // 计算连续记录天数
+        const sortedDates = entries.map(e => new Date(e.date)).sort((a, b) => b - a);
+        let streak = 1;
+        for (let i = 0; i < sortedDates.length - 1; i++) {
+            const diffTime = Math.abs(sortedDates[i] - sortedDates[i + 1]);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays === 1) {
+                streak++;
+            } else {
+                break;
+            }
+        }
+        streakDaysEl.textContent = streak;
+        
+        // 平均睡眠时长
+        const sleepEntries = entries.filter(e => e.sleep);
+        const avgSleep = sleepEntries.length > 0 
+            ? (sleepEntries.reduce((sum, e) => sum + e.sleep, 0) / sleepEntries.length).toFixed(1)
+            : 0;
+        avgSleepEl.textContent = avgSleep;
+        
+        // 目标达成率 (睡眠 >= 7小时，水分 >= 1500ml，运动 >= 30分钟)
+        let goalsMet = 0;
+        let totalGoals = 0;
+        
+        entries.forEach(entry => {
+            // 睡眠目标
+            totalGoals++;
+            if (entry.sleep && entry.sleep >= 7) goalsMet++;
+            
+            // 水分目标
+            totalGoals++;
+            if (entry.water && entry.water >= 1500) goalsMet++;
+            
+            // 运动目标
+            totalGoals++;
+            if (entry.exercise && entry.exercise >= 30) goalsMet++;
+        });
+        
+        const goalRate = totalGoals > 0 ? Math.round((goalsMet / totalGoals) * 100) : 0;
+        goalRateEl.textContent = `${goalRate}%`;
+        goalProgressEl.style.width = `${goalRate}%`;
+    }
+    
+    // 初始化图表
+    function initCharts() {
+        // 睡眠与运动趋势图
+        const sleepExerciseCtx = document.getElementById('sleep-exercise-chart').getContext('2d');
+        sleepExerciseChart = new Chart(sleepExerciseCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '睡眠时长(小时)',
+                        data: [],
+                        borderColor: '#FF6B8B',
+                        backgroundColor: 'rgba(255, 107, 139, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '运动时长(分钟)',
+                        data: [],
+                        borderColor: '#6BD5FF',
+                        backgroundColor: 'rgba(107, 213, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '睡眠时长(小时)'
+                        }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        title: {
+                            display: true,
+                            text: '运动时长(分钟)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 心情变化趋势图
+        const moodCtx = document.getElementById('mood-chart').getContext('2d');
+        moodChart = new Chart(moodCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: '心情评分',
+                    data: [],
+                    borderColor: '#FFD166',
+                    backgroundColor: 'rgba(255, 209, 102, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: {
+                            callback: function(value) {
+                                const moodLabels = ['', '糟糕', '较差', '一般', '良好', '非常好'];
+                                return moodLabels[value];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 健康指标趋势图
+        const healthMetricsCtx = document.getElementById('health-metrics-chart').getContext('2d');
+        healthMetricsChart = new Chart(healthMetricsCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '体重(kg)',
+                        data: [],
+                        borderColor: '#34D399',
+                        backgroundColor: 'transparent',
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '心率(次/分)',
+                        data: [],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'transparent',
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: '体重(kg)'
+                        }
+                    },
+                    y1: {
+                        beginAtZero: false,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        title: {
+                            display: true,
+                            text: '心率(次/分)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // 更新图表数据
+    function updateCharts() {
+        const entries = JSON.parse(localStorage.getItem('healthEntries') || '[]');
+        // 按日期排序（最新的在后面）
+        const sortedEntries = [...entries].sort((a, b) => new Date(a.date) - new Date(b.date));
+        // 只显示最近14条记录
+        const recentEntries = sortedEntries.slice(-14);
+        
+        const dates = recentEntries.map(e => formatDateShort(e.date));
+        
+        // 更新睡眠与运动图表
+        sleepExerciseChart.data.labels = dates;
+        sleepExerciseChart.data.datasets[0].data = recentEntries.map(e => e.sleep || null);
+        sleepExerciseChart.data.datasets[1].data = recentEntries.map(e => e.exercise || null);
+        sleepExerciseChart.update();
+        
+        // 更新心情图表
+        moodChart.data.labels = dates;
+        moodChart.data.datasets[0].data = recentEntries.map(e => {
+            const moodValues = { 'excellent': 5, 'good': 4, 'normal': 3, 'bad': 2, 'terrible': 1 };
+            return moodValues[e.mood] || null;
+        });
+        moodChart.update();
+        
+        // 更新健康指标图表
+        healthMetricsChart.data.labels = dates;
+        healthMetricsChart.data.datasets[0].data = recentEntries.map(e => e.weight || null);
+        healthMetricsChart.data.datasets[1].data = recentEntries.map(e => e.heartRate || null);
+        healthMetricsChart.update();
+    }
+    
+    // 显示通知
+    function showNotification(message) {
+        // 检查是否已有通知
+        let notification = document.querySelector('.notification');
+        if (notification) {
+            notification.remove();
+        }
+        
+        // 创建新通知
+        notification = document.createElement('div');
+        notification.className = 'notification fixed bottom-4 right-4 bg-primary text-white px-6 py-3 rounded-full shadow-lg z-50 fade-in';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        // 3秒后移除
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    // 辅助函数：格式化日期
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+    }
+    
+    // 辅助函数：短日期格式
+    function formatDateShort(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
+    }
+    
+    // 辅助函数：获取心情文本
+    function getMoodText(mood) {
+        const moodMap = {
+            'excellent': '非常好',
+            'good': '良好',
+            'normal': '一般',
+            'bad': '较差',
+            'terrible': '糟糕'
+        };
+        return moodMap[mood] || mood;
+    }
+    
+    // 辅助函数：将评分转换为星级
+    function getScoreStars(score) {
+        let stars = '';
+        for (let i = 1; i <= 10; i++) {
+            if (i <= score) {
+                stars += '<i class="fa fa-star text-accent"></i>';
+            } else {
+                stars += '<i class="fa fa-star-o text-gray-300"></i>';
+            }
+        }
+        return stars;
+    }
+    
+    // 初始化
+    initCharts();
+    renderEntries();
+    updateStatistics();
+    updateCharts();
+    
+    // 当切换到健康日记板块时重新绘制图表（解决Chart.js在隐藏元素中初始化的问题）
+    document.querySelectorAll('.nav-link[data-section="health-diary"]').forEach(link => {
+        link.addEventListener('click', () => {
+            setTimeout(() => {
+                updateCharts();
+            }, 100);
+        });
+    });
+});
+</script>
 </main>
 
     <footer class="bg-dark text-white py-10 mt-16">
