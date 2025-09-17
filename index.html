@@ -56,6 +56,60 @@
     
     <style>
         /* 全局动画效果 */
+/* 签到和运势特效 */
+.fortune-reveal {
+    animation: reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes reveal {
+    0% {
+        transform: scale(0.8) rotate(-5deg);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.1) rotate(3deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.streak-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #FFD166;
+    color: #333;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.lucky-item {
+    transition: transform 0.3s ease;
+}
+
+.lucky-item:hover {
+    transform: translateX(5px);
+}
+
 /* 健康达人版块样式 */
 .health-filter-btn {
     transition: all 0.3s ease;
@@ -409,28 +463,64 @@
                         </div>
                     </div>
                     
-                    <!-- 签到区域 -->
-                    <div class="w-full md:w-1/3 lg:w-1/4 flex flex-col items-center">
-                        <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow w-full text-center mb-6">
-                            <h3 class="text-xl font-bold mb-4 text-secondary">今日签到</h3>
-                            <button id="check-in-button" class="check-in-btn bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full text-lg w-full mb-4">
-                                <i class="fa fa-calendar-check-o mr-2"></i>点击签到
-                            </button>
-                            <p id="check-in-status" class="text-gray-500">还未签到哦~</p>
-                        </div>
-                        
-                        <!-- 今日运势卡片 -->
-                        <div id="fortune-card" class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow w-full hidden">
-                            <h3 class="text-xl font-bold mb-4 text-accent">今日健康运势</h3>
-                            <div class="mb-4">
-                                <p class="font-medium text-green-600"><i class="fa fa-smile-o mr-2"></i>宜：</p>
-                                <p id="fortune-lucky" class="ml-6 mt-1">多喝水，进行户外活动</p>
-                            </div>
-                            <div>
-                                <p class="font-medium text-red-500"><i class="fa fa-frown-o mr-2"></i>不宜：</p>
-                                <p id="fortune-unlucky" class="ml-6 mt-1">久坐不动，熬夜</p>
-                            </div>
-                        </div>
+<!-- 签到区域 -->
+<div class="w-full md:w-1/3 lg:w-1/4 flex flex-col items-center relative">
+    <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow w-full text-center mb-6 relative">
+        <h3 class="text-xl font-bold mb-4 text-secondary">今日签到</h3>
+        <button id="check-in-button" class="check-in-btn bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full text-lg w-full mb-4">
+            <i class="fa fa-calendar-check-o mr-2"></i>点击签到
+        </button>
+        <p id="check-in-status" class="text-gray-500">还未签到哦~</p>
+        
+        <!-- 连续签到显示 -->
+        <div id="streak-display" class="mt-4 hidden">
+            <p class="text-sm text-gray-500">当前连续签到</p>
+            <p class="text-lg font-bold text-accent"><span id="current-streak">0</span> 天</p>
+        </div>
+        
+        <!-- 连续签到徽章 -->
+        <div id="streak-badge" class="streak-badge hidden">
+            <i class="fa fa-fire"></i>
+        </div>
+    </div>
+    
+    <!-- 今日运势卡片 -->
+    <div id="fortune-card" class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow w-full hidden">
+        <h3 class="text-xl font-bold mb-4 text-accent flex items-center">
+            <i class="fa fa-magic mr-2"></i>今日健康运势
+            <span id="fortune-score" class="ml-auto bg-green-100 text-green-800 text-xs font-bold px-2.5 py-0.5 rounded-full">85分</span>
+        </h3>
+        
+        <div class="mb-4">
+            <p class="font-medium text-green-600"><i class="fa fa-smile-o mr-2"></i>宜：</p>
+            <ul id="fortune-lucky" class="ml-6 mt-1 space-y-1">
+                <li class="lucky-item"><i class="fa fa-check text-green-500 mr-1"></i>多喝水，进行户外活动</li>
+            </ul>
+        </div>
+        
+        <div class="mb-4">
+            <p class="font-medium text-red-500"><i class="fa fa-frown-o mr-2"></i>不宜：</p>
+            <ul id="fortune-unlucky" class="ml-6 mt-1 space-y-1">
+                <li class="lucky-item"><i class="fa fa-times text-red-500 mr-1"></i>久坐不动，熬夜</li>
+            </ul>
+        </div>
+        
+        <!-- 健康小贴士 -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg text-sm">
+            <p class="text-blue-700"><i class="fa fa-lightbulb-o mr-1"></i><span id="health-tip">今日适合做15分钟拉伸运动，缓解学习疲劳</span></p>
+        </div>
+        
+        <!-- 分享运势按钮 -->
+        <button id="share-fortune" class="mt-4 w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg transition-colors">
+            <i class="fa fa-share-alt mr-1"></i> 分享今日运势
+        </button>
+    </div>
+    
+    <!-- 签到奖励提示 -->
+    <div id="reward-notification" class="mt-4 bg-green-50 text-green-700 p-3 rounded-lg text-sm hidden">
+        <i class="fa fa-gift mr-1"></i> 签到成功！获得 <span id="reward-details">10积分</span>
+    </div>
+</div>
                         
                         <!-- 可爱装饰 -->
                         <div class="absolute right-10 top-40 w-16 h-16 md:w-20 md:h-20 bg-accent rounded-full opacity-30 sticker-shadow sticker-2 hidden md:block"></div>
@@ -3400,6 +3490,300 @@ function initDate() {
 
 // 页面加载完成后初始化
 window.addEventListener('load', initDate);
+});
+// 运势数据
+const fortuneData = {
+    lucky: [
+        "多喝水，每天至少1500ml",
+        "进行30分钟有氧运动",
+        "吃一份水果补充维生素",
+        "保持良好坐姿，保护颈椎",
+        "午休15-20分钟恢复精力",
+        "做5分钟眼部放松运动",
+        "与朋友家人愉快交流",
+        "尝试新的健康食谱",
+        "深呼吸放松5分钟",
+        "早睡早起，保证8小时睡眠"
+    ],
+    unlucky: [
+        "避免高糖高脂食物",
+        "不要长时间盯着电子屏幕",
+        "减少咖啡因摄入",
+        "避免久坐超过1小时",
+        "不要熬夜，尤其不要超过11点",
+        "避免暴饮暴食",
+        "不要忽视身体发出的疲劳信号",
+        "减少加工食品摄入",
+        "避免在睡前使用手机",
+        "不要跳过早餐"
+    ],
+    healthTips: [
+        "今日适合做15分钟拉伸运动，缓解学习疲劳",
+        "饭后散步10分钟有助于消化和血糖稳定",
+        "压力大时试试腹式呼吸，能快速平静心情",
+        "选择坚果作为零食，既能抗饿又有营养",
+        "保持正确的读写姿势，预防近视和驼背",
+        "学习间隙起身活动，促进血液循环",
+        "多吃深色蔬菜，补充抗氧化物质",
+        "每天保证足量蛋白质摄入，有助于生长发育",
+        "保持积极心态，对免疫系统有益",
+        "适当晒太阳，帮助身体合成维生素D"
+    ]
+};
+
+// 生成随机运势
+function generateRandomFortune() {
+    // 随机选择3个"宜"项
+    const luckyItems = getRandomItems(fortuneData.lucky, 3);
+    // 随机选择2个"不宜"项
+    const unluckyItems = getRandomItems(fortuneData.unlucky, 2);
+    // 随机选择1个健康小贴士
+    const healthTip = getRandomItems(fortuneData.healthTips, 1)[0];
+    // 随机生成运势评分
+    const score = Math.floor(Math.random() * 20) + 70; // 70-90分
+    
+    return { luckyItems, unluckyItems, healthTip, score };
+}
+
+// 从数组中随机选择指定数量的元素
+function getRandomItems(arr, count) {
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+
+// 创建签到特效 - 彩色纸屑
+function createConfetti() {
+    const colors = ['#FF6B8B', '#6BD5FF', '#FFD166', '#06D6A0', '#118AB2', '#EF476F'];
+    const container = document.body;
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.top = `${Math.random() * 50 - 10}vh`;
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        
+        // 随机动画
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 2;
+        
+        confetti.style.animation = `
+            confettiFall ${duration}s ease-in-out ${delay}s forwards,
+            confettiSway ${(Math.random() * 2) + 1}s ease-in-out ${delay}s infinite alternate
+        `;
+        
+        container.appendChild(confetti);
+        
+        // 动画结束后移除元素
+        setTimeout(() => {
+            confetti.remove();
+        }, (duration + delay) * 1000);
+    }
+}
+
+// 添加纸屑动画样式
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes confettiFall {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    @keyframes confettiSway {
+        0% { transform: translateX(-10px); }
+        100% { transform: translateX(10px); }
+    }
+`;
+document.head.appendChild(style);
+
+// 签到功能实现
+document.addEventListener('DOMContentLoaded', function() {
+    const checkInBtn = document.getElementById('check-in-button');
+    const checkInStatus = document.getElementById('check-in-status');
+    const fortuneCard = document.getElementById('fortune-card');
+    const fortuneLucky = document.getElementById('fortune-lucky');
+    const fortuneUnlucky = document.getElementById('fortune-unlucky');
+    const healthTip = document.getElementById('health-tip');
+    const fortuneScore = document.getElementById('fortune-score');
+    const streakDisplay = document.getElementById('streak-display');
+    const currentStreak = document.getElementById('current-streak');
+    const streakBadge = document.getElementById('streak-badge');
+    const rewardNotification = document.getElementById('reward-notification');
+    const rewardDetails = document.getElementById('reward-details');
+    const shareFortune = document.getElementById('share-fortune');
+    
+    // 从本地存储获取签到数据
+    let checkInData = JSON.parse(localStorage.getItem('checkInData')) || {
+        lastCheckedIn: null,
+        streak: 0
+    };
+    
+    // 更新连续签到显示
+    function updateStreakDisplay() {
+        if (checkInData.streak > 0) {
+            streakDisplay.classList.remove('hidden');
+            currentStreak.textContent = checkInData.streak;
+            
+            // 连续签到3天以上显示徽章
+            if (checkInData.streak >= 3) {
+                streakBadge.classList.remove('hidden');
+            } else {
+                streakBadge.classList.add('hidden');
+            }
+        } else {
+            streakDisplay.classList.add('hidden');
+            streakBadge.classList.add('hidden');
+        }
+    }
+    
+    // 检查今天是否已签到
+    function checkIfCheckedInToday() {
+        const today = new Date().toDateString();
+        return checkInData.lastCheckedIn === today;
+    }
+    
+    // 初始化页面
+    function initCheckInStatus() {
+        updateStreakDisplay();
+        
+        if (checkIfCheckedInToday()) {
+            checkInBtn.disabled = true;
+            checkInBtn.innerHTML = '<i class="fa fa-check mr-2"></i>已签到';
+            checkInBtn.classList.add('bg-gray-400');
+            checkInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
+            checkInStatus.textContent = '今天已完成签到，太棒了！';
+            
+            // 显示已保存的运势
+            const savedFortune = JSON.parse(localStorage.getItem('todayFortune'));
+            if (savedFortune) {
+                displayFortune(savedFortune);
+            }
+        }
+    }
+    
+    // 显示运势
+    function displayFortune(fortune) {
+        // 清空现有内容
+        fortuneLucky.innerHTML = '';
+        fortuneUnlucky.innerHTML = '';
+        
+        // 添加"宜"项
+        fortune.luckyItems.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'lucky-item';
+            li.innerHTML = `<i class="fa fa-check text-green-500 mr-1"></i>${item}`;
+            fortuneLucky.appendChild(li);
+        });
+        
+        // 添加"不宜"项
+        fortune.unluckyItems.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'lucky-item';
+            li.innerHTML = `<i class="fa fa-times text-red-500 mr-1"></i>${item}`;
+            fortuneUnlucky.appendChild(li);
+        });
+        
+        // 设置健康小贴士和评分
+        healthTip.textContent = fortune.healthTip;
+        fortuneScore.textContent = `${fortune.score}分`;
+        
+        // 显示运势卡片并添加动画
+        fortuneCard.classList.remove('hidden');
+        setTimeout(() => {
+            fortuneCard.classList.add('fortune-reveal');
+        }, 100);
+        
+        // 1秒后移除动画类以允许重新触发
+        setTimeout(() => {
+            fortuneCard.classList.remove('fortune-reveal');
+        }, 1000);
+    }
+    
+    // 签到按钮点击事件
+    checkInBtn.addEventListener('click', function() {
+        const today = new Date().toDateString();
+        
+        // 检查是否已签到
+        if (checkIfCheckedInToday()) {
+            return;
+        }
+        
+        // 更新签到数据
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toDateString();
+        
+        // 如果昨天签过到，连续签到数+1，否则重置为1
+        if (checkInData.lastCheckedIn === yesterdayStr) {
+            checkInData.streak++;
+        } else {
+            checkInData.streak = 1;
+        }
+        
+        checkInData.lastCheckedIn = today;
+        localStorage.setItem('checkInData', JSON.stringify(checkInData));
+        
+        // 生成并显示今日运势
+        const todayFortune = generateRandomFortune();
+        localStorage.setItem('todayFortune', JSON.stringify(todayFortune));
+        displayFortune(todayFortune);
+        
+        // 更新UI
+        checkInBtn.disabled = true;
+        checkInBtn.innerHTML = '<i class="fa fa-check mr-2"></i>已签到';
+        checkInBtn.classList.add('bg-gray-400', 'checked');
+        checkInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
+        checkInStatus.textContent = '恭喜你完成今日签到！';
+        
+        // 显示签到奖励
+        const rewards = ["10积分", "一张健康优惠券", "一次抽奖机会", "20积分"];
+        const randomReward = rewards[Math.floor(Math.random() * rewards.length)];
+        rewardDetails.textContent = randomReward;
+        rewardNotification.classList.remove('hidden');
+        
+        // 更新连续签到显示
+        updateStreakDisplay();
+        
+        // 触发签到特效
+        createConfetti();
+    });
+    
+    // 分享运势功能
+    shareFortune.addEventListener('click', function() {
+        const fortuneText = `我的今日健康运势：${fortuneScore.textContent}\n宜：${Array.from(fortuneLucky.children).map(li => li.textContent).join('、')}\n不宜：${Array.from(fortuneUnlucky.children).map(li => li.textContent).join('、')}\n来自青春健康坊`;
+        
+        // 现代浏览器分享API
+        if (navigator.share) {
+            navigator.share({
+                title: '我的今日健康运势',
+                text: fortuneText
+            }).catch(err => {
+                console.log('分享失败:', err);
+                copyToClipboard(fortuneText);
+            });
+        } else {
+            // 复制到剪贴板
+            copyToClipboard(fortuneText);
+        }
+    });
+    
+    // 复制到剪贴板功能
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('运势已复制到剪贴板，可以分享给朋友啦！');
+        }).catch(err => {
+            console.error('无法复制文本: ', err);
+        });
+    }
+    
+    // 初始化
+    initCheckInStatus();
 });
     </script>
 </body>
