@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -672,137 +673,196 @@
         </section>
         
         <!-- 奶茶分析系统 -->
-        <section id="milk-tea" class="section-content">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-primary mb-4">奶茶分析系统</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">想知道你常喝的奶茶有多"健康"吗？输入品牌和奶茶名称，我们会为你分析它的营养成分并提供健康建议。</p>
+<section id="milk-tea" class="section-content">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-primary mb-4">奶茶分析系统</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">想知道你常喝的奶茶有多"健康"吗？输入品牌和奶茶名称，我们会为你分析它的营养成分并提供健康建议。</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- 左侧：输入区域（适配文档2的sticker-shadow等样式） -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow card-hover">
+                <h2 class="text-2xl font-bold mb-6 text-center text-primary">奶茶信息</h2>
+                
+                <div class="space-y-6">
+                    <!-- 品牌选择 -->
+                    <div>
+                        <label for="milk-tea-brand" class="block text-gray-700 font-medium mb-2">品牌</label>
+                        <input type="text" id="milk-tea-brand" 
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                            placeholder="例如：一点点、喜茶">
+                    </div>
+                    
+                    <!-- 名称选择 -->
+                    <div>
+                        <label for="milk-tea-name" class="block text-gray-700 font-medium mb-2">饮品名称</label>
+                        <input type="text" id="milk-tea-name" 
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                            placeholder="例如：珍珠奶茶、杨枝甘露">
+                    </div>
+                    
+                    <!-- 热门奶茶推荐 -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">热门奶茶推荐</label>
+                        <div class="flex flex-wrap gap-2" id="popular-drinks">
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors" data-brand="一点点" data-name="珍珠奶茶">一点点-珍珠奶茶</span>
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors" data-brand="喜茶" data-name="杨枝甘露">喜茶-杨枝甘露</span>
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors" data-brand="奈雪" data-name="霸气橙子">奈雪-霸气橙子</span>
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors" data-brand="CoCo" data-name="珍珠奶茶">CoCo-珍珠奶茶</span>
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors" data-brand="蜜雪冰城" data-name="冰鲜柠檬水">蜜雪冰城-冰鲜柠檬水</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 糖度选择 -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">糖度</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button class="sugar-option px-3 py-2 rounded-xl border border-gray-300 hover:border-primary hover:bg-primary/5 transition-colors" data-value="full">全糖</button>
+                            <button class="sugar-option px-3 py-2 rounded-xl border border-gray-300 hover:border-primary hover:bg-primary/5 transition-colors" data-value="three-quarters">七分糖</button>
+                            <button class="sugar-option px-3 py-2 rounded-xl border border-gray-300 hover:border-primary hover:bg-primary/5 transition-colors" data-value="half">五分糖</button>
+                            <button class="sugar-option px-3 py-2 rounded-xl border border-gray-300 hover:border-primary hover:bg-primary/5 transition-colors" data-value="quarter">三分糖</button>
+                            <button class="sugar-option px-3 py-2 rounded-xl border border-gray-300 hover:border-primary hover:bg-primary/5 transition-colors" data-value="zero">无糖</button>
+                        </div>
+                        <input type="hidden" id="milk-tea-sugar" value="half">
+                    </div>
+                    
+                    <!-- 配料选择 -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">配料 (可多选)</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center p-3 rounded-xl border border-gray-200 hover:border-primary/50 hover:bg-primary/5 cursor-pointer transition-colors">
+                                <input type="checkbox" name="toppings" value="pearl" class="mr-2 h-4 w-4 text-primary">珍珠
+                            </label>
+                            <label class="flex items-center p-3 rounded-xl border border-gray-200 hover:border-primary/50 hover:bg-primary/5 cursor-pointer transition-colors">
+                                <input type="checkbox" name="toppings" value="pudding" class="mr-2 h-4 w-4 text-primary">布丁
+                            </label>
+                            <label class="flex items-center p-3 rounded-xl border border-gray-200 hover:border-primary/50 hover:bg-primary/5 cursor-pointer transition-colors">
+                                <input type="checkbox" name="toppings" value="coconut" class="mr-2 h-4 w-4 text-primary">椰果
+                            </label>
+                            <label class="flex items-center p-3 rounded-xl border border-gray-200 hover:border-primary/50 hover:bg-primary/5 cursor-pointer transition-colors">
+                                <input type="checkbox" name="toppings" value="none" class="mr-2 h-4 w-4 text-primary">无配料
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 分析按钮 -->
+                    <button id="analyze-milk-tea" 
+                        class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded-2xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center">
+                        <i class="fa fa-bar-chart mr-2"></i> 开始分析
+                    </button>
+                </div>
             </div>
-            
-            <div class="max-w-3xl mx-auto bg-white rounded-3xl p-6 md:p-8 shadow-lg sticker-shadow mb-10">
-                <!-- 输入表单 -->
-                <form id="milk-tea-form" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="milk-tea-brand" class="block text-gray-700 font-medium mb-2">奶茶品牌</label>
-                            <input type="text" id="milk-tea-brand" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="例如：一点点、喜茶">
-                        </div>
-                        <div>
-                            <label for="milk-tea-name" class="block text-gray-700 font-medium mb-2">奶茶名称</label>
-                            <input type="text" id="milk-tea-name" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="例如：珍珠奶茶、杨枝甘露">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label for="milk-tea-sugar" class="block text-gray-700 font-medium mb-2">糖度选择</label>
-                        <select id="milk-tea-sugar" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                            <option value="full">全糖</option>
-                            <option value="three-quarters">七分糖</option>
-                            <option value="half" selected>五分糖</option>
-                            <option value="quarter">三分糖</option>
-                            <option value="zero">无糖</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="milk-tea-toppings" class="block text-gray-700 font-medium mb-2">添加配料（可多选）</label>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                            <label class="flex items-center p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                                <input type="checkbox" name="toppings" value="pearls" class="mr-2"> 珍珠
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                                <input type="checkbox" name="toppings" value="pudding" class="mr-2"> 布丁
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                                <input type="checkbox" name="toppings" value="coconut" class="mr-2"> 椰果
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                                <input type="checkbox" name="toppings" value="grass-jelly" class="mr-2"> 烧仙草
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                                <input type="checkbox" name="toppings" value="red-bean" class="mr-2"> 红豆
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                                <input type="checkbox" name="toppings" value="none" class="mr-2"> 无
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center">
-                        <button type="button" id="analyze-milk-tea" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors">
-                            <i class="fa fa-bar-chart mr-2"></i>分析营养成分
-                        </button>
-                    </div>
-                </form>
+        </div>
+        
+        <!-- 右侧：结果展示区域 -->
+        <div class="lg:col-span-2">
+            <!-- 初始提示 -->
+            <div id="initial-prompt" class="bg-white rounded-3xl p-10 shadow-lg sticker-shadow text-center">
+                <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fa fa-coffee text-4xl text-primary"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-4">准备好分析您的奶茶了吗？</h2>
+                <p class="text-gray-600 max-w-md mx-auto">请在左侧填写奶茶信息，我们将为您提供详细的营养分析和健康建议</p>
             </div>
             
             <!-- 分析结果 -->
-            <div id="milk-tea-result" class="max-w-4xl mx-auto hidden">
-                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-lg sticker-shadow mb-8">
+            <div id="milk-tea-result" class="hidden space-y-8">
+                <!-- 基本信息 -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+                    <h3 class="text-2xl font-bold mb-4 text-center" id="result-name">一点点 - 珍珠奶茶（五分糖）</h3>
+                    <div class="w-full h-1 bg-primary/20 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 100%"></div>
+                    </div>
+                </div>
+                
+                <!-- 营养成分分析 -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
                     <h3 class="text-2xl font-bold mb-6 text-center">营养成分分析</h3>
                     
-                    <div class="flex flex-col md:flex-row items-center justify-between mb-8">
-                        <div class="text-center md:text-left mb-6 md:mb-0">
-                            <h4 id="result-name" class="text-xl font-bold mb-2">一点点 - 珍珠奶茶（五分糖）</h4>
-                            <p class="text-gray-600">一杯约 500ml</p>
-                        </div>
-                        
-                        <div class="flex gap-6">
-                            <div class="text-center">
-                                <p class="text-gray-500 mb-1">热量</p>
-                                <p id="result-calories" class="text-2xl font-bold text-primary">320<span class="text-sm font-normal">kcal</span></p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-gray-500 mb-1">糖分</p>
-                                <p id="result-sugar" class="text-2xl font-bold text-secondary">25<span class="text-sm font-normal">g</span></p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-gray-500 mb-1">脂肪</p>
-                                <p id="result-fat" class="text-2xl font-bold text-accent">8<span class="text-sm font-normal">g</span></p>
-                            </div>
+                    <!-- 健康评级 -->
+                    <div class="text-center mb-6">
+                        <div class="inline-block px-6 py-2 rounded-full bg-yellow-100 text-yellow-800 font-bold text-lg">
+                            健康评级: <span id="health-rating">C</span>
                         </div>
                     </div>
                     
                     <!-- 营养成分图表 -->
-                    <div class="h-64 mb-8">
+                    <div class="h-70 mb-8">
                         <canvas id="nutrition-chart"></canvas>
                     </div>
                     
-                    <!-- 健康建议 -->
-                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                        <h4 class="font-bold text-green-700 mb-2">健康建议</h4>
-                        <p id="health-advice" class="text-green-600">这款奶茶的热量相当于1.5碗米饭，糖分含量偏高。建议选择三分糖或无糖版本，并减少珍珠等配料，以降低热量和糖分摄入。每周饮用不超过2次为宜。</p>
+                    <!-- 详细数据 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            <p class="text-gray-500 text-sm">热量</p>
+                            <p id="calories" class="text-2xl font-bold text-primary">380<span class="text-sm font-normal"> 大卡</span></p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            <p class="text-gray-500 text-sm">糖分</p>
+                            <p id="sugar" class="text-2xl font-bold text-red-500">45<span class="text-sm font-normal"> g</span></p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            <p class="text-gray-500 text-sm">脂肪</p>
+                            <p id="fat" class="text-2xl font-bold text-orange-500">8<span class="text-sm font-normal"> g</span></p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            <p class="text-gray-500 text-sm">咖啡因</p>
+                            <p id="caffeine" class="text-2xl font-bold text-brown">60<span class="text-sm font-normal"> mg</span></p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 替代选择建议 -->
-                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-lg sticker-shadow">
-                    <h3 class="text-xl font-bold mb-4">更健康的替代选择</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span>选择以鲜奶为基底的奶茶，减少植脂末的摄入</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span>用水果茶替代奶茶，减少热量和脂肪摄入</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span>自制奶茶，控制糖分和添加剂的使用</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span>饮用后适当增加运动量，消耗多余热量</span>
-                        </li>
-                    </ul>
+                <!-- 健康建议区域 -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+                    <h3 class="text-2xl font-bold mb-4">健康替代建议</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg mb-2 flex items-center">
+                            <i class="fa fa-lightbulb-o text-accent mr-2"></i> 更健康的选择
+                        </h4>
+                        <ul id="healthier-options" class="space-y-2 ml-6">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>选择三分糖或无糖版本，可减少约20g糖分摄入</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>用椰果替代珍珠，减少热量摄入</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 flex items-center">
+                            <i class="fa fa-balance-scale text-secondary mr-2"></i> 运动消耗建议
+                        </h4>
+                        <p id="exercise-suggestion">
+                            要消耗这杯奶茶的热量，你需要：
+                            <span class="font-bold text-primary">慢跑40分钟</span> 或 
+                            <span class="font-bold text-primary">跳绳25分钟</span> 或
+                            <span class="font-bold text-primary">骑自行车50分钟</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 历史记录区域 -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-primary">我的查询历史</h3>
+                    <div id="history-container" class="bg-white rounded-3xl p-6 shadow-lg sticker-shadow">
+                        <p id="no-history" class="text-gray-500 text-center py-6">暂无查询记录</p>
+                        <div id="history-list" class="space-y-3 hidden"></div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- 可爱装饰元素 -->
-            <div class="absolute right-6 top-40 w-20 h-20 bg-primary/20 rounded-full sticker-shadow sticker-1 hidden md:block"></div>
-            <div class="absolute left-6 top-80 w-16 h-16 bg-secondary/20 rounded-full sticker-shadow sticker-3 hidden md:block"></div>
-            <div class="absolute right-10 bottom-40 w-12 h-12 bg-accent/20 rounded-full sticker-shadow sticker-2 hidden md:block"></div>
-        </section>
+        </div>
+    </div>
+    
+    <!-- 可爱装饰元素（保留文档2原有样式） -->
+    <div class="absolute right-6 top-40 w-20 h-20 bg-primary/20 rounded-full sticker-shadow sticker-1 hidden md:block"></div>
+    <div class="absolute left-6 top-80 w-16 h-16 bg-secondary/20 rounded-full sticker-shadow sticker-3 hidden md:block"></div>
+    <div class="absolute right-10 bottom-40 w-12 h-12 bg-accent/20 rounded-full sticker-shadow sticker-2 hidden md:block"></div>
+</section>
         
         <!-- 运动计划系统 -->
         <section id="exercise-plan" class="section-content">
@@ -2806,46 +2866,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 exerciseResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
             
-            // 奶茶分析按钮
-            const analyzeBtn = document.getElementById('analyze-milk-tea');
-            const milkTeaResult = document.getElementById('milk-tea-result');
-            
-            analyzeBtn.addEventListener('click', function() {
-                // 显示结果区域
-                milkTeaResult.classList.remove('hidden');
-                milkTeaResult.classList.add('fade-in');
-                
-                // 创建营养成分图表
-                const ctx = document.getElementById('nutrition-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['碳水化合物', '脂肪', '蛋白质'],
-                        datasets: [{
-                            data: [65, 8, 5],
-                            backgroundColor: [
-                                '#FF6B8B',
-                                '#FFD166',
-                                '#6BD5FF'
-                            ],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        },
-                        cutout: '70%'
-                    }
-                });
-                
-                // 滚动到结果区域
-                milkTeaResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
             
             // 健康计算器按钮
             const calculateHealthBtn = document.getElementById('calculate-health');
@@ -3785,6 +3805,427 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化
     initCheckInStatus();
 });
+// 奶茶数据库（来自文档1）
+const milkTeaDatabase = {
+    "一点点": {
+        "珍珠奶茶": { calories: 380, sugar: 45, fat: 8, caffeine: 60 },
+        "波霸奶茶": { calories: 420, sugar: 50, fat: 9, caffeine: 60 },
+        "四季奶青": { calories: 320, sugar: 38, fat: 7, caffeine: 55 },
+        "阿华田": { calories: 450, sugar: 55, fat: 12, caffeine: 40 },
+        "柠檬养乐多": { calories: 280, sugar: 35, fat: 3, caffeine: 25 }
+    },
+    "喜茶": {
+        "杨枝甘露": { calories: 350, sugar: 35, fat: 12, caffeine: 20 },
+        "多肉葡萄": { calories: 410, sugar: 42, fat: 10, caffeine: 40 },
+        "满杯百香果": { calories: 280, sugar: 30, fat: 5, caffeine: 30 },
+        "芝士莓莓": { calories: 390, sugar: 38, fat: 18, caffeine: 35 },
+        "黑糖波波": { calories: 480, sugar: 60, fat: 10, caffeine: 50 }
+    },
+    "奈雪": {
+        "霸气橙子": { calories: 290, sugar: 32, fat: 5, caffeine: 35 },
+        "霸气芝士草莓": { calories: 380, sugar: 36, fat: 16, caffeine: 30 },
+        "霸气芒果": { calories: 340, sugar: 40, fat: 6, caffeine: 25 },
+        "厚芋泥奶茶": { calories: 420, sugar: 35, fat: 15, caffeine: 45 },
+        "冻顶乌龙": { calories: 120, sugar: 10, fat: 0, caffeine: 55 }
+    },
+    "CoCo": {
+        "珍珠奶茶": { calories: 360, sugar: 42, fat: 7, caffeine: 55 },
+        "鲜芋青稞牛奶": { calories: 410, sugar: 30, fat: 12, caffeine: 15 },
+        "柠檬红茶": { calories: 220, sugar: 28, fat: 0, caffeine: 45 },
+        "双响炮": { calories: 310, sugar: 35, fat: 2, caffeine: 30 },
+        "奶茶三兄弟": { calories: 430, sugar: 40, fat: 8, caffeine: 50 }
+    },
+    "蜜雪冰城": {
+        "冰鲜柠檬水": { calories: 120, sugar: 25, fat: 0, caffeine: 10 },
+        "珍珠奶茶": { calories: 350, sugar: 45, fat: 6, caffeine: 50 },
+        "杨枝甘露": { calories: 320, sugar: 38, fat: 10, caffeine: 15 },
+        "芝士奶盖绿茶": { calories: 280, sugar: 20, fat: 18, caffeine: 40 },
+        "草莓摇摇奶昔": { calories: 380, sugar: 50, fat: 8, caffeine: 10 }
+    }
+};
+
+// 糖度选择事件
+document.querySelectorAll('.sugar-option').forEach(option => {
+    option.addEventListener('click', () => {
+        // 重置所有选项样式
+        document.querySelectorAll('.sugar-option').forEach(opt => {
+            opt.classList.remove('bg-primary/10', 'border-primary');
+            opt.classList.add('border-gray-300');
+        });
+        
+        // 设置当前选项样式
+        option.classList.remove('border-gray-300');
+        option.classList.add('bg-primary/10', 'border-primary');
+        
+        // 保存选择值
+        document.getElementById('milk-tea-sugar').value = option.getAttribute('data-value');
+    });
+});
+
+// 默认选中五分糖
+document.querySelector('.sugar-option[data-value="half"]').click();
+
+// 配料选择逻辑：选择"无配料"时取消其他选择
+document.querySelector('input[name="toppings"][value="none"]').addEventListener('change', function() {
+    const otherToppings = document.querySelectorAll('input[name="toppings"]:not([value="none"])');
+    if (this.checked) {
+        otherToppings.forEach(topping => topping.checked = false);
+    }
+});
+
+// 其他配料选择时取消"无配料"选择
+document.querySelectorAll('input[name="toppings"]:not([value="none"])').forEach(topping => {
+    topping.addEventListener('change', function() {
+        const noneTopping = document.querySelector('input[name="toppings"][value="none"]');
+        if (this.checked) {
+            noneTopping.checked = false;
+        }
+    });
+});
+
+// 热门奶茶点击事件
+document.querySelectorAll('#popular-drinks span').forEach(item => {
+    item.addEventListener('click', () => {
+        const brand = item.getAttribute('data-brand');
+        const name = item.getAttribute('data-name');
+        document.getElementById('milk-tea-brand').value = brand;
+        document.getElementById('milk-tea-name').value = name;
+        
+        // 添加点击动画
+        item.classList.add('bg-primary/10', 'text-primary');
+        setTimeout(() => {
+            item.classList.remove('bg-primary/10', 'text-primary');
+        }, 300);
+    });
+});
+
+// 初始化图表
+function initNutritionChart(data) {
+    const ctx = document.getElementById('nutrition-chart').getContext('2d');
+    
+    // 销毁已存在的图表（避免冲突）
+    if (window.nutritionChart) {
+        window.nutritionChart.destroy();
+    }
+    
+    window.nutritionChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['热量', '糖分', '脂肪', '咖啡因'],
+            datasets: [{
+                label: '当前饮品',
+                data: [
+                    data.calories / 500,  // 按每日推荐量比例计算
+                    data.sugar / 50,
+                    data.fat / 25,
+                    data.caffeine / 400
+                ],
+                backgroundColor: 'rgba(255, 107, 139, 0.2)',
+                borderColor: 'rgba(255, 107, 139, 1)',
+                pointBackgroundColor: 'rgba(255, 107, 139, 1)'
+            }, {
+                label: '每日建议上限',
+                data: [1, 1, 1, 1],
+                borderColor: 'rgba(107, 213, 255, 1)',
+                borderDash: [5, 5],
+                pointBackgroundColor: 'rgba(107, 213, 255, 1)',
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    min: 0,
+                    max: 1.2,
+                    ticks: { display: false }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+// 计算健康评级
+function calculateRating(data) {
+    const score = 100 - 
+        (Math.min(data.calories / 5, 30)) -
+        (Math.min(data.sugar * 1.5, 40)) -
+        (Math.min(data.fat * 2, 20)) -
+        (Math.min(data.caffeine / 20, 10));
+    
+    if (score >= 80) return 'A';
+    if (score >= 60) return 'B';
+    if (score >= 40) return 'C';
+    if (score >= 20) return 'D';
+    return 'E';
+}
+
+// 获取评级对应的颜色
+function getRatingColor(rating) {
+    const colors = {
+        'A': 'bg-green-100 text-green-800',
+        'B': 'bg-blue-100 text-blue-800',
+        'C': 'bg-yellow-100 text-yellow-800',
+        'D': 'bg-orange-100 text-orange-800',
+        'E': 'bg-red-100 text-red-800'
+    };
+    return colors[rating] || colors['C'];
+}
+
+// 生成健康建议
+function generateHealthAdvice(data, sugarLevel, toppings) {
+    const adviceList = document.getElementById('healthier-options');
+    adviceList.innerHTML = '';
+    
+    // 基于糖度的建议
+    if (['full', 'three-quarters', 'half'].includes(sugarLevel)) {
+        const reduceSugar = document.createElement('li');
+        reduceSugar.className = 'flex items-start';
+        reduceSugar.innerHTML = `
+            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+            <span>选择${sugarLevel === 'full' ? '三分糖' : '无糖'}版本，可减少约${Math.round(data.sugar * 0.5)}g糖分摄入</span>
+        `;
+        adviceList.appendChild(reduceSugar);
+    }
+    
+    // 基于配料的建议
+    if (toppings.includes('pearl') || toppings.includes('pudding')) {
+        const toppingAdvice = document.createElement('li');
+        toppingAdvice.className = 'flex items-start';
+        toppingAdvice.innerHTML = `
+            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+            <span>用椰果替代${toppings.includes('pearl') ? '珍珠' : '布丁'}，可减少约30大卡热量</span>
+        `;
+        adviceList.appendChild(toppingAdvice);
+    }
+    
+    // 基于脂肪的建议
+    if (data.fat > 15) {
+        const fatAdvice = document.createElement('li');
+        fatAdvice.className = 'flex items-start';
+        fatAdvice.innerHTML = `
+            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+            <span>选择去芝士或低脂版本，可减少约${Math.round(data.fat * 0.4)}g脂肪</span>
+        `;
+        adviceList.appendChild(fatAdvice);
+    }
+    
+    // 基于咖啡因的建议
+    if (data.caffeine > 100) {
+        const caffeineAdvice = document.createElement('li');
+        caffeineAdvice.className = 'flex items-start';
+        caffeineAdvice.innerHTML = `
+            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+            <span>建议下午3点前饮用，避免影响夜间睡眠</span>
+        `;
+        adviceList.appendChild(caffeineAdvice);
+    }
+}
+
+// 生成运动建议
+function generateExerciseAdvice(calories) {
+    const minutesJogging = Math.round(calories / 9);    // 慢跑每小时约600大卡
+    const minutesSkipping = Math.round(calories / 15);  // 跳绳每小时约900大卡
+    const minutesCycling = Math.round(calories / 7);    // 骑自行车每小时约420大卡
+    
+    document.getElementById('exercise-suggestion').innerHTML = `
+        要消耗这杯奶茶的热量，你需要：
+        <span class="font-bold text-primary">慢跑${minutesJogging}分钟</span> 或 
+        <span class="font-bold text-primary">跳绳${minutesSkipping}分钟</span> 或
+        <span class="font-bold text-primary">骑自行车${minutesCycling}分钟</span>
+    `;
+}
+
+// 保存历史记录
+function saveHistory(item) {
+    let history = JSON.parse(localStorage.getItem('milkTeaHistory') || '[]');
+    history.unshift({
+        ...item,
+        timestamp: new Date().toISOString()
+    });
+    
+    // 只保留最近10条记录
+    if (history.length > 10) history = history.slice(0, 10);
+    
+    localStorage.setItem('milkTeaHistory', JSON.stringify(history));
+    renderHistory();
+}
+
+// 渲染历史记录
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('milkTeaHistory') || '[]');
+    const container = document.getElementById('history-list');
+    const noHistory = document.getElementById('no-history');
+    
+    if (history.length === 0) {
+        noHistory.classList.remove('hidden');
+        container.classList.add('hidden');
+        return;
+    }
+    
+    noHistory.classList.add('hidden');
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+    
+    history.forEach(item => {
+        const date = new Date(item.timestamp);
+        const dateStr = `${date.getMonth()+1}月${date.getDate()}日 ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+        
+        const sugarText = { 
+            'full': '全糖', 
+            'three-quarters': '七分糖', 
+            'half': '五分糖', 
+            'quarter': '三分糖', 
+            'zero': '无糖' 
+        }[item.sugarLevel];
+        
+        const historyItem = document.createElement('div');
+        historyItem.className = 'p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 rounded-lg transition-colors';
+        historyItem.innerHTML = `
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="font-medium">${item.brand} - ${item.name}（${sugarText}）</p>
+                    <p class="text-sm text-gray-500">${dateStr} · 热量: ${item.calories}大卡 · 评级: <span class="font-medium ${getRatingColor(item.rating).replace('bg-', 'text-').replace('100', '600')}">${item.rating}</span></p>
+                </div>
+                <button class="text-secondary hover:text-primary p-2 rounded-full hover:bg-primary/5 transition-colors" data-id="${item.timestamp}">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </div>
+        `;
+        container.appendChild(historyItem);
+    });
+    
+    // 添加重新分析事件
+    container.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            const item = history.find(h => h.timestamp === id);
+            if (item) {
+                document.getElementById('milk-tea-brand').value = item.brand;
+                document.getElementById('milk-tea-name').value = item.name;
+                
+                // 选择对应的糖度
+                document.querySelector(`.sugar-option[data-value="${item.sugarLevel}"]`).click();
+                
+                // 触发分析
+                document.getElementById('analyze-milk-tea').click();
+                
+                // 滚动到结果区域
+                document.getElementById('milk-tea-result').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+}
+
+// 分析按钮点击事件
+document.getElementById('analyze-milk-tea').addEventListener('click', function() {
+    const brand = document.getElementById('milk-tea-brand').value.trim();
+    const name = document.getElementById('milk-tea-name').value.trim();
+    const sugarLevel = document.getElementById('milk-tea-sugar').value;
+    
+    // 验证输入
+    if (!brand || !name) {
+        alert('请输入奶茶品牌和名称');
+        return;
+    }
+    
+    // 添加按钮加载效果
+    this.disabled = true;
+    this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 分析中...';
+    
+    // 模拟分析延迟
+    setTimeout(() => {
+        // 获取基础数据
+        let data = milkTeaDatabase[brand]?.[name] || {
+            calories: 350 + Math.random() * 150,
+            sugar: 30 + Math.random() * 30,
+            fat: 5 + Math.random() * 10,
+            caffeine: 30 + Math.random() * 50
+        };
+        
+        // 根据糖度调整数据
+        const sugarMultipliers = {
+            'full': 1,
+            'three-quarters': 0.75,
+            'half': 0.5,
+            'quarter': 0.25,
+            'zero': 0.1
+        };
+        data = {
+            ...data,
+            sugar: data.sugar * sugarMultipliers[sugarLevel],
+            calories: data.calories * (0.8 + sugarMultipliers[sugarLevel] * 0.2)
+        };
+        
+        // 计算配料额外热量
+        const toppings = Array.from(document.querySelectorAll('input[name="toppings"]:checked'))
+            .map(checkbox => checkbox.value);
+        if (toppings.length > 0 && !toppings.includes('none')) {
+            data.calories += toppings.length * 30;
+            data.sugar += toppings.length * 5;
+        }
+        
+        // 计算评级
+        const rating = calculateRating(data);
+        
+        // 更新UI
+        const sugarText = { 
+            'full': '全糖', 
+            'three-quarters': '七分糖', 
+            'half': '五分糖', 
+            'quarter': '三分糖', 
+            'zero': '无糖' 
+        }[sugarLevel];
+        
+        document.getElementById('result-name').textContent = `${brand} - ${name}（${sugarText}）`;
+        document.getElementById('calories').innerHTML = `${Math.round(data.calories)}<span class="text-sm font-normal"> 大卡</span>`;
+        document.getElementById('sugar').innerHTML = `${Math.round(data.sugar)}<span class="text-sm font-normal"> g</span>`;
+        document.getElementById('fat').innerHTML = `${Math.round(data.fat)}<span class="text-sm font-normal"> g</span>`;
+        document.getElementById('caffeine').innerHTML = `${Math.round(data.caffeine)}<span class="text-sm font-normal"> mg</span>`;
+        
+        // 更新评级和颜色
+        const ratingElement = document.getElementById('health-rating');
+        ratingElement.textContent = rating;
+        ratingElement.parentElement.className = `inline-block px-6 py-2 rounded-full ${getRatingColor(rating)} font-bold text-lg`;
+        
+        // 初始化图表
+        initNutritionChart(data);
+        
+        // 生成健康建议
+        generateHealthAdvice(data, sugarLevel, toppings);
+        
+        // 生成运动建议
+        generateExerciseAdvice(data.calories);
+        
+        // 隐藏初始提示，显示结果
+        document.getElementById('initial-prompt').classList.add('hidden');
+        document.getElementById('milk-tea-result').classList.remove('hidden');
+        
+        // 保存历史记录
+        saveHistory({
+            brand, 
+            name, 
+            sugarLevel,
+            calories: Math.round(data.calories),
+            rating
+        });
+        
+        // 恢复按钮状态
+        this.disabled = false;
+        this.innerHTML = '<i class="fa fa-bar-chart mr-2"></i> 开始分析';
+        
+        // 滚动到结果区域
+        document.getElementById('milk-tea-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+    }, 800);
+});
+
+// 页面加载时渲染历史记录
+renderHistory();
     </script>
 </body>
 </html>
