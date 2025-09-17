@@ -3291,6 +3291,115 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('已加载全部健康达人');
         }, 1000);
     });
+
+// 日签数据
+const quoteData = [
+  {
+  text: "每天给自己15分钟的冥想时间，能有效减轻压力，提升专注力和情绪管理能力。",
+  source: "—— 心理健康协会",
+  image: "https://picsum.photos/id/1058/800/500"
+},
+{
+  text: "保持正确的坐姿和站姿，每小时起身活动5分钟，能有效预防颈椎和腰椎问题。",
+  source: "—— 骨科健康指南",
+  image: "https://picsum.photos/id/1059/800/500"
+},
+{
+  text: "微笑是最好的良药，每天多微笑，不仅能改善心情，还能增强免疫系统功能。",
+  source: "—— 积极心理学研究",
+  image: "https://picsum.photos/id/1062/800/500"
+},
+{
+  text: "每天阅读30分钟，不仅能增长知识，还能锻炼思维能力，降低认知衰退风险。",
+  source: "—— 认知科学期刊",
+  image: "https://picsum.photos/id/1074/800/500"
+},
+{
+  text: "与家人朋友保持良好沟通，建立积极的社交关系，对身心健康同等重要。",
+  source: "—— 社会心理学研究",
+  image: "https://picsum.photos/id/1083/800/500"
+},
+{
+  text: "每天晒太阳15-20分钟，有助于身体合成维生素D，促进钙吸收和骨骼健康。",
+  source: "—— 营养学杂志",
+  image: "https://picsum.photos/id/1069/800/500"
+},
+{
+  text: "减少屏幕时间，特别是睡前一小时，有助于提高睡眠质量和深度睡眠时间。",
+  source: "—— 睡眠健康联盟",
+  image: "https://picsum.photos/id/1070/800/500"
+},
+{
+  text: "学习一项新技能，不仅能拓展能力边界，还能刺激大脑神经连接，保持大脑活力。",
+  source: "—— 神经科学研究",
+  image: "https://picsum.photos/id/1071/800/500"
+},
+{
+  text: "每天做一件帮助他人的小事，能提升幸福感和自我价值感，改善心理健康状态。",
+  source: "—— 幸福心理学研究",
+  image: "https://picsum.photos/id/1076/800/500"
+},
+{
+  text: "保持规律的作息时间，即使在周末也不过度熬夜，有助于维持稳定的生物钟。",
+  source: "—— 生物钟研究中心",
+  image: "https://picsum.photos/id/1079/800/500"
+}
+];
+
+// 初始化当前日签索引
+let currentQuoteIndex = 0;
+
+// 随机切换日签函数
+function changeQuote() {
+  // 生成与当前不同的随机索引
+  let newIndex;
+  do {
+    newIndex = Math.floor(Math.random() * quoteData.length);
+  } while (newIndex === currentQuoteIndex);
+  
+  currentQuoteIndex = newIndex;
+  
+  // 获取元素
+  const quoteElement = document.getElementById('daily-quote');
+  const sourceElement = document.getElementById('quote-source');
+  const imageElement = document.getElementById('daily-quote-image');
+  
+  // 添加淡出效果
+  quoteElement.style.opacity = '0';
+  sourceElement.style.opacity = '0';
+  imageElement.style.opacity = '0';
+  
+  // 延迟更新内容以显示动画
+  setTimeout(() => {
+    quoteElement.textContent = `"${quoteData[currentQuoteIndex].text}"`;
+    sourceElement.textContent = quoteData[currentQuoteIndex].source;
+    imageElement.src = quoteData[currentQuoteIndex].image;
+    
+    // 淡入效果
+    quoteElement.style.transition = 'opacity 0.5s ease-in-out';
+    sourceElement.style.transition = 'opacity 0.5s ease-in-out';
+    imageElement.style.transition = 'opacity 0.5s ease-in-out';
+    
+    quoteElement.style.opacity = '1';
+    sourceElement.style.opacity = '1';
+    imageElement.style.opacity = '1';
+  }, 300);
+}
+
+// 为换一张按钮添加点击事件
+document.getElementById('random-quote').addEventListener('click', changeQuote);
+
+// 初始化显示当前日期
+function initDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  document.getElementById('current-date').textContent = `${year}年${month}月${day}日`;
+}
+
+// 页面加载完成后初始化
+window.addEventListener('load', initDate);
 });
     </script>
 </body>
