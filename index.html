@@ -56,6 +56,42 @@
     
     <style>
         /* 全局动画效果 */
+/* 健康达人版块样式 */
+.health-filter-btn {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.health-filter-btn.active {
+    background-color: #FF6B8B;
+    color: white;
+}
+
+.health-star-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.health-star-card:hover {
+    transform: translateY(-5px);
+}
+
+.health-star-card.hidden {
+    display: none;
+}
+
+#load-more-stars {
+    transition: all 0.3s ease;
+}
+
+#load-more-stars:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 139, 0.2);
+}
+
+.view-more-stars {
+    transition: all 0.3s ease;
+}
+
 /* 健康文章板块样式（来自文档1） */
 .article-card {
     transition: all 0.3s ease;
@@ -1571,6 +1607,169 @@
     <div class="absolute left-6 top-80 w-16 h-16 bg-secondary/20 rounded-full sticker-shadow sticker-3 hidden md:block"></div>
     <div class="absolute right-10 bottom-40 w-12 h-12 bg-accent/20 rounded-full sticker-shadow sticker-2 hidden md:block"></div>
 </section>
+
+<!-- 健康达人版块 -->
+<section id="health-stars" class="section-content">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-primary mb-4">健康达人展示</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">认识这些健康生活的践行者，从他们的故事中获取健康生活的灵感</p>
+    </div>
+    
+    <!-- 达人筛选 -->
+    <div class="max-w-3xl mx-auto mb-10 bg-white p-4 rounded-2xl shadow-md">
+        <div class="flex flex-wrap gap-3 justify-center">
+            <button class="health-filter-btn active px-5 py-2 rounded-full bg-primary text-white" data-filter="all">全部达人</button>
+            <button class="health-filter-btn px-5 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors" data-filter="diet">饮食达人</button>
+            <button class="health-filter-btn px-5 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors" data-filter="exercise">运动达人</button>
+            <button class="health-filter-btn px-5 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors" data-filter="mental">心理平衡达人</button>
+        </div>
+    </div>
+    
+    <!-- 达人列表 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <!-- 达人1 -->
+        <div class="health-star-card bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all sticker-shadow" data-category="exercise">
+            <div class="relative">
+                <img src="https://picsum.photos/id/64/600/400" alt="跑步达人李明" class="w-full h-48 object-cover">
+                <div class="absolute top-4 right-4 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
+                    运动达人
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-primary">
+                        <img src="https://picsum.photos/id/64/200/200" alt="李明" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">李明</h3>
+                        <p class="text-gray-500 text-sm">高中生 | 跑步爱好者</p>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 mb-4">"坚持跑步一年，不仅让我身体素质提升，也让我学会了自律。每天早上跑步30分钟，让我一整天都精力充沛！"</p>
+                
+                <div class="mb-4">
+                    <h4 class="font-bold mb-2">我的健康秘诀</h4>
+                    <ul class="space-y-1">
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>每天晨跑30分钟</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>周末参加长跑活动</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>跑步后进行拉伸放松</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button class="view-more-stars w-full py-2 border border-primary text-primary rounded-xl hover:bg-primary hover:text-white transition-colors">
+                    查看详细分享
+                </button>
+            </div>
+        </div>
+        
+        <!-- 达人2 -->
+        <div class="health-star-card bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all sticker-shadow" data-category="diet">
+            <div class="relative">
+                <img src="https://picsum.photos/id/292/600/400" alt="健康饮食博主张婷" class="w-full h-48 object-cover">
+                <div class="absolute top-4 right-4 bg-secondary text-white text-sm font-bold px-3 py-1 rounded-full">
+                    饮食达人
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-secondary">
+                        <img src="https://picsum.photos/id/26/200/200" alt="张婷" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">张婷</h3>
+                        <p class="text-gray-500 text-sm">大学生 | 健康饮食博主</p>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 mb-4">"健康饮食不是节食，而是选择更有营养的食物。我用简单的食材做出美味健康的餐点，让身体更有活力！"</p>
+                
+                <div class="mb-4">
+                    <h4 class="font-bold mb-2">我的健康秘诀</h4>
+                    <ul class="space-y-1">
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>三餐定时定量，营养均衡</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>每天摄入五种以上蔬菜水果</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>减少加工食品和高糖饮料</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button class="view-more-stars w-full py-2 border border-secondary text-secondary rounded-xl hover:bg-secondary hover:text-white transition-colors">
+                    查看详细分享
+                </button>
+            </div>
+        </div>
+        
+        <!-- 达人3 -->
+        <div class="health-star-card bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all sticker-shadow" data-category="mental">
+            <div class="relative">
+                <img src="https://picsum.photos/id/1059/600/400" alt="心理平衡达人王浩" class="w-full h-48 object-cover">
+                <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                    心理平衡达人
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-accent">
+                        <img src="https://picsum.photos/id/91/200/200" alt="王浩" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">王浩</h3>
+                        <p class="text-gray-500 text-sm">教师 | 冥想爱好者</p>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 mb-4">"面对学业压力，我学会了通过冥想和呼吸练习来保持内心平静。心理健康和身体健康同样重要！"</p>
+                
+                <div class="mb-4">
+                    <h4 class="font-bold mb-2">我的健康秘诀</h4>
+                    <ul class="space-y-1">
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>每天冥想15分钟</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>写情绪日记，释放压力</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>定期与朋友交流分享</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button class="view-more-stars w-full py-2 border border-accent text-accent rounded-xl hover:bg-accent hover:text-white transition-colors">
+                    查看详细分享
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载更多按钮 -->
+    <div class="text-center">
+        <button id="load-more-stars" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full transition-colors">
+            <i class="fa fa-refresh mr-2"></i>加载更多达人
+        </button>
+    </div>
+</section>
 </main>
 
     <footer class="bg-dark text-white py-10 mt-16">
@@ -2246,6 +2445,46 @@ document.getElementById('load-more-articles').addEventListener('click', function
         // 显示提示（实际项目中这里会添加新文章）
         alert('已加载全部文章');
     }, 1500);
+});
+// 健康达人筛选功能
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.health-filter-btn');
+    const starCards = document.querySelectorAll('.health-star-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 移除所有按钮的active类
+            filterButtons.forEach(btn => btn.classList.remove('active', 'bg-primary', 'text-white'));
+            filterButtons.forEach(btn => btn.classList.add('bg-gray-200'));
+            
+            // 给当前点击的按钮添加active类
+            this.classList.add('active', 'bg-primary', 'text-white');
+            this.classList.remove('bg-gray-200');
+            
+            const filter = this.getAttribute('data-filter');
+            
+            // 筛选达人卡片
+            starCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+    });
+    
+    // 加载更多达人按钮
+    document.getElementById('load-more-stars').addEventListener('click', function() {
+        // 这里可以添加加载更多达人的逻辑
+        this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>加载中...';
+        
+        // 模拟加载延迟
+        setTimeout(() => {
+            this.innerHTML = '<i class="fa fa-refresh mr-2"></i>加载更多达人';
+            alert('已加载全部健康达人');
+        }, 1000);
+    });
 });
     </script>
 </body>
